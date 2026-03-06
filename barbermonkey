@@ -1,0 +1,606 @@
+import React, { useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import {
+  Coins,
+  ShieldCheck,
+  Sparkles,
+  Truck,
+  Mail,
+  Phone,
+  Instagram,
+  Facebook,
+  MapPin,
+  Gavel,
+  BadgeCheck,
+  ShoppingBag,
+  PlayCircle,
+  Timer,
+  Trophy,
+} from "lucide-react";
+
+const nav = [
+  { id: "home", label: "Home" },
+  { id: "live", label: "Live Auction" },
+  { id: "shop", label: "Shop" },
+  { id: "shows", label: "Live Shows" },
+  { id: "how", label: "How It Works" },
+  { id: "stock", label: "What We Sell" },
+  { id: "sell", label: "Sell To Us" },
+  { id: "faq", label: "FAQ" },
+  { id: "contact", label: "Contact" },
+];
+
+const LOGO_SRC = "/mm-barber-monkey-logo.png";
+
+const badges = [
+  {
+    icon: <BadgeCheck className="h-5 w-5 text-amber-300" />,
+    title: "Dealer-Style",
+    desc: "Clear rules, clear pricing, no nonsense.",
+  },
+  {
+    icon: <ShieldCheck className="h-5 w-5 text-amber-300" />,
+    title: "Authenticity First",
+    desc: "Bullion & numismatics handled with care.",
+  },
+  {
+    icon: <Truck className="h-5 w-5 text-amber-300" />,
+    title: "UK Shipping",
+    desc: "Secure packing and tracked options.",
+  },
+];
+
+const products = [
+  {
+    title: "Gold",
+    points: ["1g–1oz bars", "Sovereigns & modern coins", "Assay cards & capsules"],
+  },
+  {
+    title: "Silver",
+    points: ["1oz coins & bars", "Britannias / world silver", "Collector pieces"],
+  },
+  {
+    title: "Copper",
+    points: ["Rounds & bars", "Budget stackers", "Fun add-ons for sets"],
+  },
+  {
+    title: "Numismatics",
+    points: ["Graded & raw coins", "World / UK / commemoratives", "Variety bundles"],
+  },
+];
+
+const featuredShop = [
+  { name: "1g Gold Bar", price: "£95", tag: "Starter gold", emoji: "🥇" },
+  { name: "1oz Silver Britannia", price: "£34", tag: "Popular coin", emoji: "🥈" },
+  { name: "5oz Copper Round", price: "£12", tag: "Budget stacker", emoji: "🟠" },
+  { name: "Collector Coin Lot", price: "£49", tag: "Mixed numismatics", emoji: "🪙" },
+];
+
+const faqs = [
+  {
+    q: "What is a randomised / surprise set?",
+    a: "You buy a number or spot and we do a random draw. Your number matches a prize on the board.",
+  },
+  {
+    q: "How many numbers are there?",
+    a: "We often run sets like 100 or 180 numbers. Each show post confirms the total numbers and the main prizes.",
+  },
+  {
+    q: "Do you ship UK-wide?",
+    a: "Yes. We pack securely and can offer tracked services. Shipping depends on weight and value.",
+  },
+  {
+    q: "Can I sell bullion or coins to you?",
+    a: "Yes — message us what you’ve got with photos and weights. We’ll make an offer based on spot, condition, and demand.",
+  },
+];
+
+function ScrollLink({ id, children, className, onClick }) {
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+        onClick?.();
+      }}
+      className={className}
+    >
+      {children}
+    </button>
+  );
+}
+
+function Pill({ children }) {
+  return (
+    <span className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-zinc-900/70 px-3 py-1 text-xs font-medium text-zinc-200 shadow-sm backdrop-blur">
+      {children}
+    </span>
+  );
+}
+
+function Card({ title, icon, children }) {
+  return (
+    <div className="rounded-2xl border border-amber-500/30 bg-zinc-900/70 p-5 shadow-lg backdrop-blur">
+      <div className="mb-3 flex items-center gap-3">
+        <div className="grid h-10 w-10 place-items-center rounded-xl border border-amber-500/30 bg-black/40 text-white">
+          {icon}
+        </div>
+        <div className="text-sm font-semibold text-white">{title}</div>
+      </div>
+      <div className="text-sm leading-relaxed text-zinc-300">{children}</div>
+    </div>
+  );
+}
+
+function Section({ id, kicker, title, children }) {
+  return (
+    <section id={id} className="scroll-mt-24 py-14">
+      <div className="mx-auto w-full max-w-6xl px-4">
+        <div className="mb-8">
+          {kicker ? (
+            <div className="mb-2 text-xs font-semibold tracking-[0.25em] text-amber-300/80">
+              {kicker}
+            </div>
+          ) : null}
+          <h2 className="text-2xl font-semibold text-white sm:text-3xl">{title}</h2>
+        </div>
+        {children}
+      </div>
+    </section>
+  );
+}
+
+export default function MMBarberMonkeyBullionSite() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const year = useMemo(() => new Date().getFullYear(), []);
+
+  return (
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.18),transparent_22%),linear-gradient(to_bottom_right,#000,#111827,#000)] text-white">
+      <header className="sticky top-0 z-50 border-b border-amber-500/20 bg-black/70 backdrop-blur">
+        <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3">
+          <div className="flex items-center gap-3">
+            <motion.div
+              animate={{ rotate: [0, 2, -2, 0], y: [0, -1, 1, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="h-12 w-12 overflow-hidden rounded-xl border border-amber-500/40 bg-black shadow-lg shadow-amber-500/20"
+            >
+              <img
+                src={LOGO_SRC}
+                alt="MM Barber Monkey Bullion & Numismatics logo"
+                className="h-full w-full object-cover"
+              />
+            </motion.div>
+            <div className="leading-tight">
+              <div className="text-sm font-semibold text-white">MM Barber Monkey</div>
+              <div className="text-xs text-amber-200">Bullion & Numismatics</div>
+            </div>
+          </div>
+
+          <nav className="hidden items-center gap-2 md:flex">
+            {nav.map((n) => (
+              <ScrollLink
+                key={n.id}
+                id={n.id}
+                className="rounded-full px-3 py-2 text-sm text-zinc-300 transition hover:bg-white/10 hover:text-white"
+              >
+                {n.label}
+              </ScrollLink>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <ScrollLink
+              id="contact"
+              className="hidden rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 px-4 py-2 text-sm font-semibold text-black shadow-lg hover:from-amber-400 hover:to-yellow-300 md:inline-flex"
+            >
+              Get in touch
+            </ScrollLink>
+
+            <button
+              type="button"
+              onClick={() => setMenuOpen((s) => !s)}
+              className="inline-flex items-center justify-center rounded-xl border border-amber-500/30 bg-black px-3 py-2 text-sm text-white hover:bg-white/10 md:hidden"
+              aria-label="Toggle menu"
+            >
+              Menu
+            </button>
+          </div>
+        </div>
+
+        {menuOpen ? (
+          <div className="border-t border-amber-500/20 bg-black/90 md:hidden">
+            <div className="mx-auto w-full max-w-6xl px-4 py-3">
+              <div className="grid gap-1">
+                {nav.map((n) => (
+                  <ScrollLink
+                    key={n.id}
+                    id={n.id}
+                    onClick={() => setMenuOpen(false)}
+                    className="w-full rounded-xl px-3 py-2 text-left text-sm text-zinc-300 hover:bg-white/10"
+                  >
+                    {n.label}
+                  </ScrollLink>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : null}
+      </header>
+
+      <section id="home" className="relative overflow-hidden">
+        <div className="mx-auto w-full max-w-6xl px-4 py-14 sm:py-20">
+          <div className="grid items-center gap-10 md:grid-cols-2">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-red-500/40 bg-red-500/10 px-4 py-2 text-sm font-semibold text-red-200 shadow-lg shadow-red-900/20">
+                <span className="relative flex h-3 w-3">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75" />
+                  <span className="relative inline-flex h-3 w-3 rounded-full bg-red-500" />
+                </span>
+                LIVE AUCTIONS • RANDOM SETS • BULLION DROPS
+              </div>
+
+              <div className="mb-4 flex flex-wrap gap-2">
+                <Pill>
+                  <Coins className="h-4 w-4" /> Bullion
+                </Pill>
+                <Pill>
+                  <Sparkles className="h-4 w-4" /> Numismatics
+                </Pill>
+                <Pill>
+                  <Gavel className="h-4 w-4" /> Randomised Sets
+                </Pill>
+              </div>
+
+              <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-6xl">
+                MM Barber Monkey
+                <span className="block bg-gradient-to-r from-amber-300 to-yellow-500 bg-clip-text text-transparent">
+                  Bullion & Numismatics
+                </span>
+              </h1>
+              <p className="mt-4 max-w-xl text-base leading-relaxed text-zinc-300">
+                Dealer-style buying and selling of gold, silver, copper and rare coins — plus
+                transparent randomised surprise sets for live shows.
+              </p>
+
+              <div className="mt-7 flex flex-wrap gap-3">
+                <ScrollLink
+                  id="live"
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-red-500 to-orange-400 px-5 py-3 text-sm font-semibold text-white shadow-lg hover:from-red-400 hover:to-orange-300"
+                >
+                  <PlayCircle className="h-4 w-4" /> Watch live auction
+                </ScrollLink>
+                <ScrollLink
+                  id="shop"
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 px-5 py-3 text-sm font-semibold text-black shadow-lg hover:from-amber-400 hover:to-yellow-300"
+                >
+                  <ShoppingBag className="h-4 w-4" /> Shop bullion
+                </ScrollLink>
+              </div>
+
+              <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                {badges.map((b) => (
+                  <div
+                    key={b.title}
+                    className="rounded-2xl border border-amber-500/20 bg-black/35 p-4 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-2 text-white">{b.icon}</div>
+                    <div className="text-sm font-semibold text-white">{b.title}</div>
+                    <div className="mt-1 text-xs leading-relaxed text-zinc-300">{b.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="relative"
+            >
+              <div className="relative rounded-[2rem] border border-amber-500/30 bg-black/45 p-6 shadow-2xl backdrop-blur">
+                <div className="flex items-center justify-between">
+                  <div className="text-sm font-semibold text-amber-300">Featured Dealer Panel</div>
+                  <div className="text-xs text-zinc-400">UK</div>
+                </div>
+
+                <div className="mt-5 overflow-hidden rounded-2xl border border-amber-500/20 bg-black">
+                  <img
+                    src={LOGO_SRC}
+                    alt="MM Barber Monkey Bullion & Numismatics"
+                    className="h-72 w-full object-cover"
+                  />
+                </div>
+
+                <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                  <div className="rounded-2xl border border-amber-500/20 bg-zinc-900 p-4 text-white">
+                    <div className="flex items-center gap-2 text-sm font-semibold">
+                      <Coins className="h-4 w-4 text-amber-300" /> Bullion
+                    </div>
+                    <ul className="mt-2 space-y-1 text-sm text-zinc-300">
+                      <li>• Gold & silver bars</li>
+                      <li>• Coins in capsules</li>
+                      <li>• Stackers & bundles</li>
+                    </ul>
+                  </div>
+                  <div className="rounded-2xl border border-amber-500/20 bg-zinc-900 p-4 text-white">
+                    <div className="flex items-center gap-2 text-sm font-semibold">
+                      <Sparkles className="h-4 w-4 text-amber-300" /> Numismatics
+                    </div>
+                    <ul className="mt-2 space-y-1 text-sm text-zinc-300">
+                      <li>• Rare coins</li>
+                      <li>• World / UK</li>
+                      <li>• Variety lots</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="mt-5 rounded-2xl border border-amber-500/20 bg-zinc-900 p-4">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                    <Gavel className="h-4 w-4 text-amber-300" /> Randomised sets
+                  </div>
+                  <p className="mt-2 text-sm text-zinc-300">
+                    We post the total numbers, main prizes, and rules for each show.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      <Section id="live" kicker="ON AIR" title="Live Auction Page">
+        <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+          <div className="rounded-[2rem] border border-red-500/30 bg-gradient-to-br from-zinc-950 via-zinc-900 to-black p-6 shadow-2xl shadow-red-950/20">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-red-500/40 bg-red-500/15 px-3 py-1 text-xs font-semibold text-red-200">
+                  <span className="h-2.5 w-2.5 rounded-full bg-red-500" /> LIVE NOW
+                </div>
+                <h3 className="mt-3 text-2xl font-semibold text-white">Treasure Drop Auction Room</h3>
+                <p className="mt-2 max-w-xl text-sm text-zinc-300">
+                  Big headline area for your current show, countdown, featured prizes, and your live selling platform button.
+                </p>
+              </div>
+              <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-right">
+                <div className="text-xs uppercase tracking-[0.2em] text-amber-300">Tonight</div>
+                <div className="mt-1 text-xl font-bold text-white">7:00 PM</div>
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-4 sm:grid-cols-3">
+              <div className="rounded-2xl border border-zinc-800 bg-zinc-900/80 p-4">
+                <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                  <Timer className="h-4 w-4 text-amber-300" /> Countdown
+                </div>
+                <div className="mt-3 text-2xl font-bold text-amber-300">00:42:18</div>
+              </div>
+              <div className="rounded-2xl border border-zinc-800 bg-zinc-900/80 p-4">
+                <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                  <Trophy className="h-4 w-4 text-amber-300" /> Top Prize
+                </div>
+                <div className="mt-3 text-base font-bold text-white">1g Gold Bar</div>
+              </div>
+              <div className="rounded-2xl border border-zinc-800 bg-zinc-900/80 p-4">
+                <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                  <Coins className="h-4 w-4 text-amber-300" /> Board
+                </div>
+                <div className="mt-3 text-base font-bold text-white">180 Numbers</div>
+              </div>
+            </div>
+
+            <div className="mt-6 rounded-[1.5rem] border border-amber-500/30 bg-black p-4">
+              <div className="grid place-items-center rounded-[1.25rem] border border-dashed border-amber-500/30 bg-gradient-to-br from-zinc-900 to-black px-6 py-16 text-center">
+                <PlayCircle className="h-14 w-14 text-amber-300" />
+                <div className="mt-4 text-xl font-semibold text-white">Live stream embed area</div>
+                <div className="mt-2 max-w-md text-sm text-zinc-400">
+                  This links directly to your Whatnot live shows so buyers can jump straight into the auction room.
+                </div>
+                <a
+                  href="https://www.whatnot.com/en-GB/user/barbermonkeybullion?referringSource=autocomplete" target="_blank" rel="noreferrer"
+                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-red-500 to-orange-400 px-5 py-3 text-sm font-semibold text-white hover:from-red-400 hover:to-orange-300"
+                >
+                  <PlayCircle className="h-4 w-4" /> Join on Whatnot
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid gap-4">
+            <div className="rounded-[2rem] border border-amber-500/30 bg-zinc-900/70 p-5 shadow-xl">
+              <div className="text-sm font-semibold text-amber-300">Featured prizes</div>
+              <div className="mt-4 space-y-3">
+                <div className="rounded-2xl border border-zinc-800 bg-black/40 p-4 text-sm text-zinc-300">🥇 1g Gold Bar</div>
+                <div className="rounded-2xl border border-zinc-800 bg-black/40 p-4 text-sm text-zinc-300">🥈 1oz Silver Britannia</div>
+                <div className="rounded-2xl border border-zinc-800 bg-black/40 p-4 text-sm text-zinc-300">🥉 Copper rounds & coin bundles</div>
+              </div>
+            </div>
+            <div className="rounded-[2rem] border border-amber-500/30 bg-zinc-900/70 p-5 shadow-xl">
+              <div className="text-sm font-semibold text-amber-300">Auction rules</div>
+              <ul className="mt-4 space-y-2 text-sm text-zinc-300">
+                <li>• Pay before reveal or before next spin</li>
+                <li>• Tracked UK shipping available</li>
+                <li>• Clear number board and prize list</li>
+                <li>• Re-spin rules shown before show starts</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      <Section id="shop" kicker="STORE" title="Bullion Shop Layout">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {featuredShop.map((item) => (
+            <div
+              key={item.name}
+              className="group rounded-[2rem] border border-amber-500/30 bg-gradient-to-b from-zinc-900 to-black p-5 shadow-xl transition hover:-translate-y-1 hover:shadow-amber-900/20"
+            >
+              <div className="flex h-40 items-center justify-center rounded-[1.5rem] border border-zinc-800 bg-[radial-gradient(circle_at_center,rgba(251,191,36,0.18),transparent_55%),linear-gradient(to_bottom_right,#18181b,#000)] text-5xl">
+                {item.emoji}
+              </div>
+              <div className="mt-4 flex items-start justify-between gap-3">
+                <div>
+                  <div className="text-base font-semibold text-white">{item.name}</div>
+                  <div className="mt-1 text-sm text-zinc-400">{item.tag}</div>
+                </div>
+                <div className="rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-sm font-bold text-amber-300">
+                  {item.price}
+                </div>
+              </div>
+              <button className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 px-4 py-3 text-sm font-semibold text-black hover:from-amber-400 hover:to-yellow-300">
+                <ShoppingBag className="h-4 w-4" /> View item
+              </button>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section id="shows" kicker="LIVE" title="Live Shows & Randomised Auctions">
+        <div className="grid gap-5 md:grid-cols-3">
+          <Card title="Show Schedule" icon={<Sparkles className="h-5 w-5 text-amber-300" />}>
+            Your live shows run through Whatnot. Add your next date and time here, then send buyers straight to your Whatnot profile.
+          </Card>
+          <Card title="Board Size" icon={<Coins className="h-5 w-5 text-amber-300" />}>
+            Sets can be 100, 180, or other totals. Each show post clearly states the total numbers and the prize list.
+          </Card>
+          <Card title="Transparency" icon={<ShieldCheck className="h-5 w-5 text-amber-300" />}>
+            Rules stay consistent: draw method, re-spins, postage rules, and when prizes ship.
+          </Card>
+        </div>
+      </Section>
+
+      <Section id="how" kicker="GUIDE" title="How It Works">
+        <div className="grid gap-5 md:grid-cols-2">
+          <Card title="1) Pick a number" icon={<Coins className="h-5 w-5 text-amber-300" />}>
+            You buy a number or spot. Numbers are limited per set.
+          </Card>
+          <Card title="2) Random draw" icon={<Gavel className="h-5 w-5 text-amber-300" />}>
+            We draw randomly live. Your number matches a prize on the board.
+          </Card>
+          <Card title="3) Win your item" icon={<Sparkles className="h-5 w-5 text-amber-300" />}>
+            Bullion, coins, bundles, or top prizes — depending on the show.
+          </Card>
+          <Card title="4) Secure shipping" icon={<Truck className="h-5 w-5 text-amber-300" />}>
+            We pack securely and ship UK-wide with tracked options.
+          </Card>
+        </div>
+      </Section>
+
+      <Section id="stock" kicker="STOCK" title="What We Sell">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {products.map((p) => (
+            <div
+              key={p.title}
+              className="rounded-2xl border border-amber-500/30 bg-zinc-900/70 p-5 shadow-lg backdrop-blur"
+            >
+              <div className="text-sm font-semibold text-white">{p.title}</div>
+              <ul className="mt-3 space-y-1 text-sm text-zinc-300">
+                {p.points.map((pt) => (
+                  <li key={pt}>• {pt}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section id="sell" kicker="TRADE" title="Sell to Us">
+        <div className="grid gap-5 md:grid-cols-3">
+          <Card title="Send photos" icon={<Mail className="h-5 w-5 text-amber-300" />}>
+            Message clear photos, weight, and any hallmarks or assay details.
+          </Card>
+          <Card title="Get an offer" icon={<ShieldCheck className="h-5 w-5 text-amber-300" />}>
+            We’ll price based on spot, condition, and demand — and explain the offer.
+          </Card>
+          <Card title="Drop-off or post" icon={<Truck className="h-5 w-5 text-amber-300" />}>
+            Use tracked shipping for bullion and coins. We’ll confirm packing and address.
+          </Card>
+        </div>
+      </Section>
+
+      <Section id="faq" kicker="HELP" title="FAQ">
+        <div className="grid gap-4 md:grid-cols-2">
+          {faqs.map((f) => (
+            <div
+              key={f.q}
+              className="rounded-2xl border border-amber-500/30 bg-zinc-900/70 p-5 shadow-lg backdrop-blur"
+            >
+              <div className="text-sm font-semibold text-white">{f.q}</div>
+              <div className="mt-2 text-sm leading-relaxed text-zinc-300">{f.a}</div>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section id="contact" kicker="CONTACT" title="Contact & Socials">
+        <div className="grid gap-5 md:grid-cols-2">
+          <div className="rounded-2xl border border-amber-500/30 bg-zinc-900/70 p-6 shadow-lg backdrop-blur">
+            <div className="text-sm font-semibold text-white">Clickable buttons</div>
+            <p className="mt-2 text-sm text-zinc-300">
+              Your live auction link is now connected to Whatnot. Send me your Facebook, Instagram, phone, and email and I’ll plug them in too.
+            </p>
+
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              <a
+                href="https://www.whatnot.com/en-GB/user/barbermonkeybullion?referringSource=autocomplete" target="_blank" rel="noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 px-4 py-3 text-sm font-semibold text-black hover:from-amber-400 hover:to-yellow-300"
+              >
+                <Facebook className="h-4 w-4" /> Facebook
+              </a>
+              <a
+                href="https://www.whatnot.com/en-GB/user/barbermonkeybullion?referringSource=autocomplete" target="_blank" rel="noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-amber-500/30 bg-black px-4 py-3 text-sm font-semibold text-white hover:bg-white/10"
+              >
+                <Instagram className="h-4 w-4" /> Instagram
+              </a>
+              <a
+                href="https://www.whatnot.com/en-GB/user/barbermonkeybullion?referringSource=autocomplete" target="_blank" rel="noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-amber-500/30 bg-black px-4 py-3 text-sm font-semibold text-white hover:bg-white/10"
+              >
+                <Phone className="h-4 w-4" /> Phone
+              </a>
+              <a
+                href="https://www.whatnot.com/en-GB/user/barbermonkeybullion?referringSource=autocomplete" target="_blank" rel="noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-amber-500/30 bg-black px-4 py-3 text-sm font-semibold text-white hover:bg-white/10"
+              >
+                <Mail className="h-4 w-4" /> Email
+              </a>
+            </div>
+
+            <div className="mt-5 rounded-2xl border border-amber-500/20 bg-black/30 p-4">
+              <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                <MapPin className="h-4 w-4 text-amber-300" /> Location
+              </div>
+              <div className="mt-1 text-sm text-zinc-300">UK</div>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-amber-500/30 bg-zinc-900/70 p-6 shadow-lg backdrop-blur">
+            <div className="text-sm font-semibold text-white">Logo setup</div>
+            <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm text-zinc-300">
+              <li>
+                Save your logo as <span className="font-mono">mm-barber-monkey-logo.png</span> in the
+                <span className="font-mono"> /public</span> folder.
+              </li>
+              <li>It will then appear automatically in the header and hero panel.</li>
+              <li>Send your contact details and I’ll wire everything up.</li>
+            </ol>
+          </div>
+        </div>
+      </Section>
+
+      <footer className="border-t border-amber-500/20 bg-black/80">
+        <div className="mx-auto w-full max-w-6xl px-4 py-8">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="text-sm text-zinc-400">© {year} MM Barber Monkey Bullion & Numismatics</div>
+            <div className="text-xs text-zinc-500">Built for live shows, randomised sets, bullion & coin trading.</div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
